@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">StackOverflowAndroidClient</string>
 
+    <string name="tags_list">Tags</string>
+    <string name="posts_list">Posts</string>
+    <string name="no_results">No results</string>
+    <string name="back">Back</string>
+
     <!--Error messages-->
     <string name="unknown_error">Unknown error</string>
     <string name="network_error">Network error</string>
