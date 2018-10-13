@@ -15,6 +15,7 @@ import com.briak.stackoverflowclient.presentation.tagslist.TagsListPresenter
 import com.briak.stackoverflowclient.presentation.tagslist.TagsListView
 import com.briak.stackoverflowclient.ui.base.BaseFragment
 import com.briak.stackoverflowclient.ui.base.ErrorDialogFragment
+import com.briak.stackoverflowclient.ui.base.RecyclerViewOnScrollListener
 import com.briak.stackoverflowclient.ui.base.Screens
 import kotlinx.android.synthetic.main.fragment_tags_list.*
 import kotlinx.coroutines.experimental.Job
@@ -62,19 +63,21 @@ class TagsListFragment :
             setColorSchemeResources(R.color.colorAccent)
 
             setOnRefreshListener {
+                (tagsListView.adapter as TagAdapter).clear()
                 presenter.refresh()
             }
         }
+
+        initAdapter()
     }
 
     override fun showTags(tags: List<TagUI>) {
-        val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
-        itemDecorator.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.decorator_listview)!!)
-
         tagsListView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            addItemDecoration(itemDecorator)
-            adapter = TagAdapter(tags, this@TagsListFragment)
+            if (adapter == null) {
+                adapter = TagAdapter(tags.toMutableList(), this@TagsListFragment)
+            } else {
+                (adapter as TagAdapter).add(tags)
+            }
         }
     }
 
@@ -110,5 +113,23 @@ class TagsListFragment :
 
     override fun onTagClick(tag: TagUI) {
         cicerone.router.navigateTo(Screens.PostsListScreen)
+    }
+
+    private fun initAdapter() {
+        val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
+        itemDecorator.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.decorator_listview)!!)
+
+        val linearLayoutManager = LinearLayoutManager(activity)
+        val scrollListener = object : RecyclerViewOnScrollListener(linearLayoutManager) {
+            override fun onLoadMore() {
+                startTagsJob()
+            }
+        }
+
+        tagsListView.apply {
+            layoutManager = linearLayoutManager
+            addItemDecoration(itemDecorator)
+            addOnScrollListener(scrollListener)
+        }
     }
 }

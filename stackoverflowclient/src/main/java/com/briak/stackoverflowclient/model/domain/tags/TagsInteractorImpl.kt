@@ -22,7 +22,7 @@ class TagsInteractorImpl @Inject constructor(
             for (j in 0 until wikis.size) {
                 if (tags.items[i].name == wikis[j].tagName) {
                     tags.items[i].excerpt = wikis[j].excerpt
-                    continue
+                    break
                 }
             }
         }

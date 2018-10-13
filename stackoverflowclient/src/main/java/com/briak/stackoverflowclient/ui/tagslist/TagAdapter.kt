@@ -9,7 +9,7 @@ import com.briak.stackoverflowclient.entities.tag.presentation.TagUI
 import com.briak.stackoverflowclient.extensions.onClick
 import kotlinx.android.synthetic.main.item_tag.view.*
 
-class TagAdapter(private val list: List<TagUI>,
+class TagAdapter(private val list: MutableList<TagUI>,
                  private val listener: OnTagClickListener) : RecyclerView.Adapter<TagAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(list[position])
@@ -24,6 +24,19 @@ class TagAdapter(private val list: List<TagUI>,
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun add(tags: List<TagUI>) {
+        for (i in 0 until tags.size) {
+            if (!list.contains(tags[i])) {
+                list.add(tags[i])
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        list.clear()
+    }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(tag: TagUI) = with(itemView) {

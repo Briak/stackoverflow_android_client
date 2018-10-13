@@ -15,7 +15,10 @@ class TagsListPresenter @Inject constructor(
         private val errorHandler: ErrorHandler,
         private val tagsListMapper: TagsListMapper
 ) : MvpPresenter<TagsListView>() {
-    private var refresh: Boolean = false
+
+    private var refresh = false
+    private var hasMore = true
+    private var page = 1
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -25,26 +28,35 @@ class TagsListPresenter @Inject constructor(
 
     fun refresh() {
         refresh = true
+        hasMore = true
+        page = 1
+
         viewState.startTagsJob()
     }
 
     suspend fun getTags() {
-        viewState.showProgress(!refresh)
+        if (hasMore) {
+            viewState.showProgress(page == 1 || refresh)
 
-        try {
-            withContext(CommonPool) {
-                tagsInteractor.getTags(1)
-            }.let { tags ->
-                viewState.showTags(tagsListMapper.map(tags).items)
-                viewState.showEmpty(tags.items.isEmpty())
-                viewState.showProgress(false)
+            try {
+                withContext(CommonPool) {
+                    tagsInteractor.getTags(page)
+                }.let { tags ->
+                    viewState.showTags(tagsListMapper.map(tags).items)
+                    viewState.showEmpty(tags.items.isEmpty())
+                    viewState.showProgress(false)
+
+                    refresh = false
+                    hasMore = tags.hasMore
+                    if (tags.hasMore) {
+                        page++
+                    }
+                }
+            } catch (e: Throwable) {
+                viewState.showMessage(errorHandler.proceed(e))
 
                 refresh = false
             }
-        } catch (e: Throwable) {
-            viewState.showMessage(errorHandler.proceed(e))
-
-            refresh = false
         }
     }
 }
