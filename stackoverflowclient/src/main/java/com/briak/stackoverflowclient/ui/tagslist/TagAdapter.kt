@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.briak.stackoverflowclient.R
-import com.briak.stackoverflowclient.entities.tag.Tag
+import com.briak.stackoverflowclient.entities.tag.presentation.TagUI
 import com.briak.stackoverflowclient.extensions.onClick
 import kotlinx.android.synthetic.main.item_tag.view.*
 
-class TagAdapter(private val list: List<Tag>,
+class TagAdapter(private val list: List<TagUI>,
                  private val listener: OnTagClickListener) : RecyclerView.Adapter<TagAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(list[position])
@@ -26,14 +26,14 @@ class TagAdapter(private val list: List<Tag>,
     override fun getItemCount(): Int = list.size
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(tag: Tag) = with(itemView) {
+        fun bind(tag: TagUI) = with(itemView) {
             nameView.text = tag.name
             descriptionView.text = tag.description
-            countView.text = String.format(" x %d", tag.postsCount)
+            countView.text = String.format(" x %d", tag.count)
         }
     }
 
     interface OnTagClickListener {
-        fun onTagClick(tag: Tag)
+        fun onTagClick(tag: TagUI)
     }
 }

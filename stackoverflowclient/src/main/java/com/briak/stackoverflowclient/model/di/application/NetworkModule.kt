@@ -55,7 +55,7 @@ class NetworkModule {
                 addCallAdapterFactory(CoroutineCallAdapterFactory())
                 addConverterFactory(MoshiConverterFactory.create(moshi))
                 client(okHttpClient)
-                baseUrl("https://newsapi.org")
+                baseUrl("https://api.stackexchange.com")
                 build()
             }
 

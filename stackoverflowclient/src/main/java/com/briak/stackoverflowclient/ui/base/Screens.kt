@@ -13,4 +13,8 @@ class Screens {
     object PostsListScreen : SupportAppScreen() {
         override fun getFragment(): Fragment = PostsListFragment()
     }
+
+    companion object {
+        const val ERROR_DIALOG = "error dialog"
+    }
 }

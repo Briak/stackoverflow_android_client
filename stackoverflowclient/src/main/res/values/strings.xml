@@ -6,6 +6,10 @@
     <string name="no_results">No results</string>
     <string name="back">Back</string>
 
+    <!--Error dialog-->
+    <string name="ok">OK</string>
+    <string name="error">Error!</string>
+
     <!--Error messages-->
     <string name="unknown_error">Unknown error</string>
     <string name="network_error">Network error</string>
