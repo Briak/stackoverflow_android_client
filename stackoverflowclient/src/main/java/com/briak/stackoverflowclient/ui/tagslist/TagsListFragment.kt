@@ -112,7 +112,7 @@ class TagsListFragment :
     }
 
     override fun onTagClick(tag: TagUI) {
-        cicerone.router.navigateTo(Screens.PostsListScreen)
+        cicerone.router.navigateTo(Screens.PostsListScreen(tag.name))
     }
 
     private fun initAdapter() {

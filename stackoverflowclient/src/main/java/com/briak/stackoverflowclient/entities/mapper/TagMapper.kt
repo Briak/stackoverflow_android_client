@@ -6,19 +6,19 @@ import javax.inject.Inject
 
 open class TagMapper @Inject constructor() : Mapper<Tag, TagUI>() {
     override fun map(value: Tag): TagUI {
-        val articleUI = TagUI()
-        articleUI.name = value.name
-        articleUI.description = value.excerpt
-        articleUI.count = value.count
+        val tagUI = TagUI()
+        tagUI.name = value.name
+        tagUI.description = value.excerpt
+        tagUI.count = value.count
 
-        return articleUI
+        return tagUI
     }
 
     override fun reverseMap(value: TagUI): Tag {
-        val article = Tag()
-        article.name = value.name
-        article.count = value.count
+        val tag = Tag()
+        tag.name = value.name
+        tag.count = value.count
 
-        return article
+        return tag
     }
 }

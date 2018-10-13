@@ -1,5 +1,6 @@
 package com.briak.stackoverflowclient.model.data.server
 
+import com.briak.stackoverflowclient.entities.post.server.PostsList
 import com.briak.stackoverflowclient.entities.tag.server.TagsList
 import com.briak.stackoverflowclient.entities.wikis.server.TagWikiList
 import kotlinx.coroutines.experimental.Deferred
@@ -27,4 +28,14 @@ interface StackOverflowApi {
             @Path("tags") tags: String,
             @Query("site") site: String = SITE
     ): Deferred<TagWikiList>
+
+    @GET("$API_PATH/questions")
+    fun getPosts(
+            @Query("tagged") tagged: String,
+            @Query("page") page: Int,
+            @Query("pagesize") pageSize: Int = 20,
+            @Query("order") order: String = "desc",
+            @Query("sort") sort: String = "activity",
+            @Query("site") site: String = SITE
+    ): Deferred<PostsList>
 }

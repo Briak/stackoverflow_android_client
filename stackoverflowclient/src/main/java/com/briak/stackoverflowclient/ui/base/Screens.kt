@@ -1,5 +1,6 @@
 package com.briak.stackoverflowclient.ui.base
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.briak.stackoverflowclient.ui.postslist.PostsListFragment
 import com.briak.stackoverflowclient.ui.tagslist.TagsListFragment
@@ -10,8 +11,8 @@ class Screens {
         override fun getFragment(): Fragment = TagsListFragment()
     }
 
-    object PostsListScreen : SupportAppScreen() {
-        override fun getFragment(): Fragment = PostsListFragment()
+    data class PostsListScreen(private val tag: String): SupportAppScreen() {
+        override fun getFragment(): Fragment = PostsListFragment.getInstance(tag)
     }
 
     companion object {
