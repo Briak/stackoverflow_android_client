@@ -1,9 +1,11 @@
 package com.briak.stackoverflowclient.model.domain.posts
 
 import com.briak.stackoverflowclient.entities.post.server.PostsList
+import com.briak.stackoverflowclient.model.di.postslist.PostsListScope
 import com.briak.stackoverflowclient.model.repositories.posts.PostsRepository
 import javax.inject.Inject
 
+@PostsListScope
 class PostsInteractorImpl @Inject constructor(
         private val postsRepository: PostsRepository
 ) : PostsInteractor {

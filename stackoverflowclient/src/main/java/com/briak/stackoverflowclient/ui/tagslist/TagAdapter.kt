@@ -1,12 +1,14 @@
 package com.briak.stackoverflowclient.ui.tagslist
 
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.briak.stackoverflowclient.R
 import com.briak.stackoverflowclient.entities.tag.presentation.TagUI
 import com.briak.stackoverflowclient.extensions.onClick
+import com.briak.stackoverflowclient.extensions.visible
 import kotlinx.android.synthetic.main.item_tag.view.*
 
 class TagAdapter(private val list: MutableList<TagUI>,
@@ -36,13 +38,15 @@ class TagAdapter(private val list: MutableList<TagUI>,
 
     fun clear() {
         list.clear()
+        notifyDataSetChanged()
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(tag: TagUI) = with(itemView) {
             nameView.text = tag.name
-            descriptionView.text = tag.description
+            descriptionView.text = Html.fromHtml(tag.description)
             countView.text = String.format(" x %d", tag.count)
+            androidView.visible(tag.name == "android")
         }
     }
 

@@ -1,6 +1,5 @@
 package com.briak.stackoverflowclient.ui.base
 
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.briak.stackoverflowclient.ui.postslist.PostsListFragment
 import com.briak.stackoverflowclient.ui.tagslist.TagsListFragment

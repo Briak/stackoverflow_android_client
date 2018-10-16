@@ -4,8 +4,10 @@ import com.briak.stackoverflowclient.entities.post.presentation.PostUI
 import com.briak.stackoverflowclient.entities.post.presentation.PostsListUI
 import com.briak.stackoverflowclient.entities.post.server.Post
 import com.briak.stackoverflowclient.entities.post.server.PostsList
+import com.briak.stackoverflowclient.model.di.postslist.PostsListScope
 import javax.inject.Inject
 
+@PostsListScope
 open class PostsListMapper @Inject constructor() : Mapper<PostsList, PostsListUI>() {
     private val postMapper = PostMapper()
 

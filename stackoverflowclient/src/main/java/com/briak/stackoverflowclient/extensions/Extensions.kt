@@ -22,15 +22,6 @@ fun View.onClick(action: suspend (View) -> Unit) {
 val View.contextJob: Job?
     get() = (context as? JobHolder)?.job
 
-//TODO integrate
-//val backgroundPool: CoroutineDispatcher by lazy {
-//    val numProcessors = Runtime.getRuntime().availableProcessors()
-//    when {
-//        numProcessors <= 2 -> newFixedThreadPoolContext(2, "background")
-//        else -> CommonPool
-//    }
-//}
-
 fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }

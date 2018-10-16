@@ -31,6 +31,10 @@ class StackOverflowClientApplication : Application() {
 
             return postsListComponent!!
         }
+
+        fun clearPostsListComponent() {
+            postsListComponent = null
+        }
     }
 
     override fun onCreate() {

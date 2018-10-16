@@ -5,15 +5,11 @@ data class PostUI(
 
         var owner: OwnerUI,
 
-        var viewCount: Int,
-
-        var answerCount: Int,
-
-        var score: Int,
-
         var creationDate: Long,
 
-        var title: String
+        var title: String,
+
+        var body: String
 ) {
-    constructor() : this(listOf<String>(), OwnerUI(), 0, 0, 0, 0, "")
+    constructor() : this(listOf<String>(), OwnerUI(), 0, "", "")
 }

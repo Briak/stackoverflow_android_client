@@ -10,20 +10,20 @@ import javax.inject.Inject
 
 open class ErrorHandler @Inject constructor(private val resourceManager: ResourceManager) {
     fun proceed(error: Throwable): String {
-        if (error is HttpException) {
+        return if (error is HttpException) {
             val code = error.code()
-            if (code == 400 || code == 401 || code == 429 || code == 500) {
+            if (code in 400..407 || code == 407 || code in 409..500 || code in 502..503) {
                 val moshi = Moshi.Builder().build()
                 val jsonAdapter = moshi.adapter<ErrorResponse>(ErrorResponse::class.java)
                 val errorResponse = jsonAdapter.fromJson(String(
                         error.response().errorBody()!!.source().readByteArray(),
                         Charset.defaultCharset()))
-                return errorResponse.message
+                errorResponse.errorMessage
             } else {
-                return error.userMessage(resourceManager)
+                error.userMessage(resourceManager)
             }
         } else {
-            return error.userMessage(resourceManager)
+            error.userMessage(resourceManager)
         }
     }
 }

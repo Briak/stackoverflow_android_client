@@ -4,7 +4,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.AbsListView
 
-abstract class RecyclerViewOnScrollListener(private val mLinearLayoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+abstract class RecyclerViewOnScrollListener(private val linearLayoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
     private var loading = true
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -19,10 +19,10 @@ abstract class RecyclerViewOnScrollListener(private val mLinearLayoutManager: Li
         super.onScrolled(recyclerView, dx, dy)
 
         val visibleItemCount = recyclerView.childCount
-        val totalItemCount = mLinearLayoutManager.itemCount
-        val firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
+        val totalItemCount = linearLayoutManager.itemCount
+        val firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition()
 
-        if (loading && visibleItemCount + firstVisibleItem == totalItemCount) {
+        if (loading && visibleItemCount + firstVisibleItem == totalItemCount - 5) {
             loading = false
 
             onLoadMore()

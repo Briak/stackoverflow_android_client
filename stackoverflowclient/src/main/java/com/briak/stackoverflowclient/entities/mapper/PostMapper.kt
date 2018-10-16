@@ -11,11 +11,9 @@ open class PostMapper @Inject constructor() : Mapper<Post, PostUI>() {
         val postUI = PostUI()
         postUI.tags = value.tags
         postUI.owner = ownerMapper.map(value.owner)
-        postUI.viewCount = value.viewCount
-        postUI.answerCount = value.answerCount
-        postUI.score = value.score
         postUI.creationDate = value.creationDate
         postUI.title = value.title
+        postUI.body = value.body
 
         return postUI
     }
@@ -24,11 +22,9 @@ open class PostMapper @Inject constructor() : Mapper<Post, PostUI>() {
         val post = Post()
         post.tags = value.tags
         post.owner = ownerMapper.reverseMap(value.owner)
-        post.viewCount = value.viewCount
-        post.answerCount = value.answerCount
-        post.score = value.score
         post.creationDate = value.creationDate
         post.title = value.title
+        post.body = value.body
 
         return post
     }

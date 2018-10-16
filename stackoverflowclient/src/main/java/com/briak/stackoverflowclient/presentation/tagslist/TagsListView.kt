@@ -1,14 +1,15 @@
 package com.briak.stackoverflowclient.presentation.tagslist
 
 import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import com.arellomobile.mvp.viewstate.strategy.*
 import com.briak.stackoverflowclient.entities.tag.presentation.TagUI
+import com.briak.stackoverflowclient.model.di.tagslist.TagsListScope
 
+@TagsListScope
+@StateStrategyType(AddToEndSingleStrategy::class)
 interface TagsListView: MvpView {
-    fun showTags(tags: List<TagUI>)
     fun showProgress(show: Boolean)
+    fun showRefresh(show: Boolean)
     fun showEmpty(show: Boolean)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
@@ -16,4 +17,8 @@ interface TagsListView: MvpView {
 
     @StateStrategyType(SkipStrategy::class)
     fun startTagsJob()
+
+    @StateStrategyType(AddToEndStrategy::class)
+    fun showTags(tags: List<TagUI>)
+
 }

@@ -10,6 +10,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.briak.stackoverflowclient.R
 import com.briak.stackoverflowclient.StackOverflowClientApplication
 import com.briak.stackoverflowclient.entities.post.presentation.PostUI
+import com.briak.stackoverflowclient.extensions.onClick
 import com.briak.stackoverflowclient.extensions.visible
 import com.briak.stackoverflowclient.presentation.postslist.PostsListPresenter
 import com.briak.stackoverflowclient.presentation.postslist.PostsListView
@@ -21,16 +22,11 @@ import kotlinx.android.synthetic.main.fragment_posts_list.*
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class PostsListFragment :
         BaseFragment(),
         PostsListView {
-
-    @Inject
-    lateinit var cicerone: Cicerone<Router>
 
     @Inject
     @InjectPresenter
@@ -62,6 +58,7 @@ class PostsListFragment :
 
     override fun onDestroy() {
         postsJob?.cancel()
+        StackOverflowClientApplication.clearPostsListComponent()
 
         super.onDestroy()
     }
@@ -81,6 +78,10 @@ class PostsListFragment :
         initAdapter()
 
         presenter.setTag(arguments?.getString("TAG")!!)
+
+        postsListBackView?.onClick {
+            presenter.back()
+        }
     }
 
     override fun showPosts(posts: List<PostUI>) {
@@ -95,19 +96,28 @@ class PostsListFragment :
 
     override fun showProgress(show: Boolean) {
         launch(UI) {
-            postsListProgressView?.visible(show)
-            postsListView?.visible(!show)
-            refreshPostsListView?.isRefreshing = false
-
-            if (show) {
-                emptyView?.visible(false)
-            }
+            postsListProgressView.visible(show)
+            postsListView.visible(!show)
+            refreshPostsListView.isRefreshing = false
+            emptyView.visible(false)
         }
     }
 
     override fun showEmpty(show: Boolean) {
         emptyView.visible(show)
         postsListView.visible(!show)
+    }
+
+    override fun showRefresh(show: Boolean) {
+        launch(UI) {
+            postsListProgressView.visible(false)
+            postsListView.visible(!show)
+            emptyView.visible(false)
+        }
+    }
+
+    override fun showTag(tag: String) {
+        postsListToolbarTitle.text = String.format("Questions tagged [$tag]")
     }
 
     override fun showMessage(message: String) {
@@ -118,12 +128,6 @@ class PostsListFragment :
     }
 
     override fun startPostsJob() {
-        postsJob = launch(UI) {
-            presenter.getPosts()
-        }
-    }
-
-    override fun start() {
         postsJob = launch(UI) {
             presenter.getPosts()
         }
@@ -143,6 +147,7 @@ class PostsListFragment :
         postsListView.apply {
             layoutManager = linearLayoutManager
             addItemDecoration(itemDecorator)
+            adapter = PostAdapter(mutableListOf())
             addOnScrollListener(scrollListener)
         }
     }

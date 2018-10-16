@@ -36,6 +36,7 @@ interface StackOverflowApi {
             @Query("pagesize") pageSize: Int = 20,
             @Query("order") order: String = "desc",
             @Query("sort") sort: String = "activity",
-            @Query("site") site: String = SITE
+            @Query("site") site: String = SITE,
+            @Query("filter") filter: String = "withbody"
     ): Deferred<PostsList>
 }

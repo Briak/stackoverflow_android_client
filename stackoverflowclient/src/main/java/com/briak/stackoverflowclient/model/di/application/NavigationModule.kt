@@ -8,11 +8,6 @@ import javax.inject.Singleton
 
 @Module
 abstract class NavigationModule {
-
-//    @Binds
-//    @Singleton
-//    abstract fun provideMainPresenter(mainPresenter: MainPresenter): MvpPresenter<MainView>
-
     @Module
     companion object {
         @JvmStatic

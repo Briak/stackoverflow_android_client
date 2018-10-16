@@ -29,8 +29,10 @@ data class Post(
 
         var link: String,
 
-        var title: String
+        var title: String,
+
+        var body: String
 ) {
     constructor() : this(listOf<String>(), Owner(), false, 0, 0, 0,
-            0, 0, 0, "", "")
+            0, 0, 0, "", "", "")
 }

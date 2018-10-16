@@ -5,6 +5,7 @@
     <string name="posts_list">Posts</string>
     <string name="no_results">No results</string>
     <string name="back">Back</string>
+    <string name="android_icon">android</string>
 
     <!--Error dialog-->
     <string name="ok">OK</string>

@@ -21,17 +21,12 @@ import kotlinx.android.synthetic.main.fragment_tags_list.*
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class TagsListFragment :
         BaseFragment(),
         TagsListView,
         TagAdapter.OnTagClickListener {
-
-    @Inject
-    lateinit var cicerone: Cicerone<Router>
 
     @Inject
     @InjectPresenter
@@ -72,24 +67,31 @@ class TagsListFragment :
     }
 
     override fun showTags(tags: List<TagUI>) {
-        tagsListView.apply {
-            if (adapter == null) {
-                adapter = TagAdapter(tags.toMutableList(), this@TagsListFragment)
-            } else {
-                (adapter as TagAdapter).add(tags)
+        launch(UI) {
+            tagsListView.apply {
+                if (adapter == null) {
+                    adapter = TagAdapter(tags.toMutableList(), this@TagsListFragment)
+                } else {
+                    (adapter as TagAdapter).add(tags)
+                }
             }
         }
     }
 
     override fun showProgress(show: Boolean) {
         launch(UI) {
-            tagsListProgressView?.visible(show)
-            tagsListView?.visible(!show)
-            refreshTagsListView?.isRefreshing = false
+            tagsListProgressView.visible(show)
+            tagsListView.visible(!show)
+            refreshTagsListView.isRefreshing = false
+            emptyView.visible(false)
+        }
+    }
 
-            if (show) {
-                emptyView?.visible(false)
-            }
+    override fun showRefresh(show: Boolean) {
+        launch(UI) {
+            tagsListProgressView.visible(false)
+            tagsListView.visible(!show)
+            emptyView.visible(false)
         }
     }
 
@@ -101,7 +103,6 @@ class TagsListFragment :
     override fun showMessage(message: String) {
         launch(UI) {
             ErrorDialogFragment.getInstance(message).show(activity!!.supportFragmentManager, Screens.ERROR_DIALOG)
-            tagsListView.visible(false)
         }
     }
 
@@ -112,7 +113,7 @@ class TagsListFragment :
     }
 
     override fun onTagClick(tag: TagUI) {
-        cicerone.router.navigateTo(Screens.PostsListScreen(tag.name))
+        presenter.showPostsList(tag.name)
     }
 
     private fun initAdapter() {
@@ -129,6 +130,7 @@ class TagsListFragment :
         tagsListView.apply {
             layoutManager = linearLayoutManager
             addItemDecoration(itemDecorator)
+            adapter = TagAdapter(mutableListOf(), this@TagsListFragment)
             addOnScrollListener(scrollListener)
         }
     }

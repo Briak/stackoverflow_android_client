@@ -9,7 +9,7 @@ import com.briak.stackoverflowclient.R
 import com.briak.stackoverflowclient.extensions.onClick
 import kotlinx.android.synthetic.main.dialog_fragment_error.*
 
-class ErrorDialogFragment: MvpAppCompatDialogFragment() {
+class ErrorDialogFragment : MvpAppCompatDialogFragment() {
     private lateinit var description: String
 
     companion object {
@@ -27,6 +27,7 @@ class ErrorDialogFragment: MvpAppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
 
         setStyle(STYLE_NO_TITLE, 0)
+        isCancelable = false
 
         description = arguments?.getString("description")!!
     }
